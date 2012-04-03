@@ -1,0 +1,113 @@
+
+/*
+ID: codin.m1
+LANG: JAVA
+TASK: beads
+*/
+
+import java.io.*;
+
+class beads {
+	
+	static String input;
+	static int size;
+	
+	public static void main ( String[] args ) throws IOException {
+		
+		BufferedReader bin = new BufferedReader( new FileReader("beads.in"));
+		PrintWriter out = new PrintWriter ( new BufferedWriter(new FileWriter("beads.out")));
+		size = Integer.parseInt(bin.readLine());
+		input = bin.readLine();
+		int ind = 0, max;
+		max = Integer.MIN_VALUE;
+		
+		for ( int i = 0; i < size; i++ ) {
+			
+			int num = beadCount(i);
+			if ( num > max ) {
+				ind = i;
+				max = num;
+			}
+		}
+		out.println(max);
+		out.close();
+		bin.close();
+		System.exit(0);
+	}
+	
+	public static int beadCount ( int index ) {
+		
+		int fInd,bInd,fCount = 1,bCount = 1;
+		char chf = input.charAt(index);
+		fInd = index + 1;
+		bInd = index - 1;
+		boolean fflag = true,bflag = true,isEqual = false;
+		if ( index == 0 )
+			bInd = size - 1;
+		if( index == size - 1 )
+			fInd = 0;
+		char chb = input.charAt(bInd);
+		bInd = bInd == 0? size - 1: bInd - 1;
+		
+		while ( true ) {
+			
+			char fCh = input.charAt(fInd);
+				
+			if ( chf == 'w' && fflag == true) {
+				chf = fCh;
+				fCount++;
+				fInd++;
+			}
+			else {
+				if ( (fCh == chf || fCh == 'w' ) && fflag == true) {
+					fCount++;
+					fInd++;
+				}
+				else {
+					fflag = false;
+				}
+			}
+			
+			if ( fInd == size ) {
+				fInd = 0;
+			}
+			if ( fInd == index ) {
+				isEqual = true;
+				break;
+			}
+			if ( fflag == false )
+				break;
+		}
+		
+		if ( isEqual )
+			return fCount;
+		
+		while (true) {
+			
+			char bCh = input.charAt(bInd);
+			if ( chb == 'w' && bflag == true ) {
+				chb = bCh;
+				bCount++;
+				if ( bInd == fInd )
+					break;
+				bInd--;
+			}
+			else {
+				if ( (bCh == chb || bCh == 'w' ) && bflag == true ) { 
+					bCount++;
+					if ( bInd == fInd )
+						break;
+					bInd--;
+				}
+				else {
+					bflag = false;
+				}
+			}
+			if ( bInd == -1 )
+				bInd = size - 1;
+			if ( bflag == false )
+				break;
+		}
+		return fCount + bCount;
+	}
+}

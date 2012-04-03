@@ -1,0 +1,59 @@
+package USACO;
+/*
+ID: codin.m1
+LANG: JAVA
+TASK: nocows
+*/
+
+import java.io.*;
+import java.util.*;
+
+class nocows {
+
+	static int[][] numTrees;
+	public static void main ( String[] args ) throws IOException {
+		
+		//BufferedReader bin = new BufferedReader( new FileReader("nocows.in"));
+		BufferedReader bin = new BufferedReader( new InputStreamReader(System.in));
+		//PrintWriter out = new PrintWriter ( new BufferedWriter(new FileWriter("nocows.out")));
+		PrintWriter out = new PrintWriter ( new BufferedWriter(new OutputStreamWriter(System.out)));
+		
+		StringTokenizer str = new StringTokenizer(bin.readLine());
+		int nodes = Integer.parseInt(str.nextToken());
+		int depth = Integer.parseInt(str.nextToken());
+		numTrees = new int[nodes+1][depth+1];
+		
+		for ( int i = 1; i <= depth; i++ ) {
+			numTrees[1][i] = 1;
+			for ( int j = 2; j <= nodes; j++ ) {
+				numTrees[j][i] = 0; 
+				for ( int k = 1; k < j - 2; k++ ) {
+					numTrees[j][i] += numTrees[k][i-1] * numTrees[j - k - 1][k-1];
+					numTrees[j][i] %= 9901;
+				}
+			}
+		}
+		out.println(numTrees[nodes][depth]);
+		out.close();
+		bin.close();
+		System.exit(0);
+	}
+	
+	public static int count(int n, int k) {
+		if(k==1)
+			return n==1?1:0;
+		if(2*k - 1 > n)
+			return 0;
+		
+		if(numTrees[n][k] != -1)
+			return numTrees[n][k];
+		
+		numTrees[n][k] = 0;
+		
+		
+		
+		
+		return numTrees[n][k];
+		
+	}
+}

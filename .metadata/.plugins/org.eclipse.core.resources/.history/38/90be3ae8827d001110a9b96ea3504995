@@ -1,0 +1,49 @@
+package problems;
+
+import java.io.*;
+import java.util.*;
+
+public class skeleton {
+
+	public static void main ( String[] args ) throws IOException {
+		Scanner in = new Scanner(System.in);
+		long number;
+		number = in.nextLong();
+		//boolean[] primes = new boolean[number];
+		//Arrays.fill(primes, true);
+		//primes[0] = false;
+		//primes[1] = false;
+		for ( long i = 2; i < number; i++ ) {
+			boolean var = isPrime(i);
+			if(var) 
+				System.out.println(i);
+		}
+		
+		/*for ( int i = 2; i < number; i++ ) {
+			if ( primes[i]) {
+				for ( int j = i*2; j < number; j+=i )
+					primes[j] = false;
+			}
+		}
+		
+		for ( int i = 2; i < number; i++ )
+			if(primes[i])
+				System.out.println(i);
+		*/
+		
+	}
+	
+	public static boolean isPrime(long n) {
+		
+		if (n == 2 || n == 3)
+			return true;
+		if (n % 2 == 0)
+			return false;
+		int sqrt = (int)Math.sqrt(n);
+		for ( long i = 3; i <= sqrt; i+= 2 ) 
+			if ( n % i == 0 )
+				return false;
+		
+		return true;
+	}
+}

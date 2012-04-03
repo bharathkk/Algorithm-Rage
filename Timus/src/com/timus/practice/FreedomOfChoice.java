@@ -1,0 +1,40 @@
+package com.timus.practice;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class FreedomOfChoice {
+
+	public static void main ( String[] args ) throws NumberFormatException, IOException {
+		
+		BufferedReader bin = new BufferedReader(new InputStreamReader(System.in));
+		
+		int num = Integer.parseInt(bin.readLine());
+		int[][] lcs;
+		lcs = new int[num][num];
+		String inp1,inp2;
+		
+		inp1 = bin.readLine();
+		inp2 = bin.readLine();
+		
+		for ( int i = 0; i < num; i++ ) 
+			for ( int j = 0; j < num; j++ ) {
+				if ( i == 0  || j == 0 ) {
+					lcs[i][j] = 0;
+				}
+				else {
+					if ( inp1.charAt(i - 1) == inp2.charAt(j - 1)) {
+						lcs[i][j] = lcs[i-1][j-1] + 1;
+					}
+					else {
+						lcs[i][j] = Math.max(lcs[i][j-1], lcs[i-1][j]);
+					}
+				}
+				
+			}
+				
+		System.out.println(lcs[num-1][num-1]);
+		
+	}
+}

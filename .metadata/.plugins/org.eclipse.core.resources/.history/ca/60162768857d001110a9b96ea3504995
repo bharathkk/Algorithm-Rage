@@ -1,0 +1,199 @@
+package codestreet;
+
+import java.io.*;
+import java.util.*;
+
+public class Solution {
+	
+	public static void main ( String[] args ) throws NumberFormatException, IOException {
+		
+		BufferedReader bin = new BufferedReader(new InputStreamReader(System.in));
+		String inp;
+		int[][] output;
+		int totalBalances = Integer.parseInt(bin.readLine());
+		Balances[] givenBalances = new Balances[totalBalances];
+		PriorityQueue<Balances> minQueue = new PriorityQueue<Balances>(totalBalances,new BalancesComparator());
+		output = new int[totalBalances][2];
+		
+		for ( int i = 0 ; i < totalBalances; i++ ) {
+			
+			if ( givenBalances[i] == null )
+				givenBalances[i] = new Balances(i);
+			
+			for ( int j = 0; j < 2; j++ ) {
+				inp = bin.readLine();
+				StringTokenizer st = new StringTokenizer(inp," ");
+				if ( j == 0 )
+					givenBalances[i].setlWeight(Integer.parseInt(st.nextToken()));
+				else
+					givenBalances[i].setrWeight(Integer.parseInt(st.nextToken()));
+				
+				while(st.hasMoreTokens()) {
+					if ( j == 0 ) {
+						int num = Integer.parseInt(st.nextToken());
+						if ( givenBalances[num] == null ) 
+							givenBalances[num] = new Balances(num);
+						givenBalances[i].addlChild(givenBalances[num]);
+					}
+					else {
+						int num = Integer.parseInt(st.nextToken());
+						if ( givenBalances[num] == null )
+							givenBalances[num] = new Balances(num);
+						givenBalances[i].addrChild(givenBalances[num]);
+					}
+				}
+			}
+			
+		}
+		
+		for ( int i = 0; i < totalBalances; i++ ) {
+			output[i][0] = 0;
+			output[i][1] = 0;
+			minQueue.add(givenBalances[i]);
+		}
+		
+		while ( ! minQueue.isEmpty() ) {
+			
+			Balances tempBal = minQueue.poll();
+			if ( tempBal == null )
+				break;
+			int lWeight,rWeight,id;
+			id = tempBal.getId();
+			lWeight = tempBal.getlWeight() + tempBal.getlChildWeight();
+			rWeight = tempBal.getrWeight() + tempBal.getrChildWeight();
+			if ( lWeight > rWeight ) {
+				output[id][1] = lWeight - rWeight;
+				int weight = tempBal.getrWeight();
+				tempBal.setrWeight(weight + output[id][1]);
+			}
+			
+			if ( lWeight < rWeight ) {
+				output[id][0] = rWeight - lWeight;
+				int weight = tempBal.getlWeight();
+				tempBal.setlWeight(weight + output[id][0]);
+			}
+		}
+		
+		for ( int i = 0; i < totalBalances; i++ ) {
+			System.out.println(i+": "+output[i][0]+" "+output[i][1]);
+			givenBalances[i] = null;
+		}
+		
+		bin.close();
+	}
+	
+}
+
+class BalancesComparator implements Comparator<Balances> {
+
+	@Override
+	public int compare(Balances bal1, Balances bal2) {
+		
+		if ( bal1.getTotalWeight() < bal2.getTotalWeight() )
+			return -1;
+		
+		if ( bal1.getTotalWeight() > bal2.getTotalWeight() )
+			return 1;
+		
+		return 0;
+	}
+	
+}
+
+class Balances {
+	
+	int lWeight,rWeight,totalWeight,id;
+	List<Balances> lChild,rChild;
+	
+	public int getlWeight() {
+		return lWeight;
+	}
+
+	public int getId() {
+		return id;
+	}
+	public void setlWeight(int lWeight) {
+		this.lWeight = lWeight;
+	}
+
+	public int getrWeight() {
+		return rWeight;
+	}
+	
+	public int getlChildWeight() {
+		if ( lChild == null )
+			return 0;
+		int weight = 0;
+		int len = lChild.size();
+		
+		for ( int i = 0; i < len; i++ )
+			weight += lChild.get(i).getTotalWeight();
+		
+		return weight;
+	}
+	
+	public int getrChildWeight() {
+		if ( rChild == null )
+			return 0;
+		int weight = 0;
+		int len = rChild.size();
+		
+		for ( int i = 0; i < len; i++ )
+			weight += rChild.get(i).getTotalWeight();
+		
+		return weight;
+	}
+	
+	public void setrWeight(int rWeight) {
+		this.rWeight = rWeight;
+	}
+
+	public int getTotalWeight() {
+		int weight = 10;
+		weight += lWeight + rWeight;
+		if ( lChild != null )
+			weight += getlChildWeight();
+		if ( rChild != null )
+			weight += getrChildWeight();
+		
+		return weight;
+	}
+
+	public void setTotalWeight(int totalWeight) {
+		this.totalWeight = totalWeight;
+	}
+	
+	public void calcWeight() {
+		
+		totalWeight += lWeight + rWeight;
+		if ( lChild != null )
+			totalWeight += getlChildWeight();
+		if ( rChild != null )
+			totalWeight += getrChildWeight();
+	}
+	
+	public Balances (int id) {
+		this.id = id;
+		lWeight = 0;
+		rWeight = 0;
+		totalWeight = 10;
+		lChild = null;
+		rChild = null;
+	}
+
+	public void addlChild ( Balances child ) {
+		if ( lChild == null )
+			lChild = new ArrayList<Balances>();
+		
+		lChild.add(child);	
+	}
+	
+	public void addrChild ( Balances child ) {
+		if ( rChild == null )
+			rChild = new ArrayList<Balances>();
+		
+		rChild.add(child);	
+	}
+	
+}
+

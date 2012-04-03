@@ -1,0 +1,71 @@
+package com.usaco.contest;
+import java.io.*;
+import java.util.*;
+
+
+class coord { 
+	int x, y;
+	
+	public coord(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	public int getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return y;
+	}
+}
+
+public class connect {
+
+	static coord[] cows;
+	static boolean[] visited;
+	static int nCows,soln=0;
+	public static void main(String[] args) throws IOException {
+		//BufferedReader bin = new BufferedReader(new FileReader("connect.in"));
+		BufferedReader bin = new BufferedReader(new InputStreamReader(System.in));
+		//PrintWriter out = new PrintWriter(new FileWriter("connect.out"));
+		nCows = Integer.parseInt(bin.readLine());
+		cows = new coord[nCows];
+		visited = new boolean[nCows];
+		Arrays.fill(visited, false);
+		for ( int i = 0; i < nCows; i++ ) {
+			String[] ords = bin.readLine().split(" ");
+			cows[i] = new coord(Integer.parseInt(ords[0]),Integer.parseInt(ords[1]));
+		}
+		
+		findNumPaths(0,0);
+		System.out.println(soln);
+		bin.close();
+		//out.close();
+	}
+	
+	public static void findNumPaths(int x, int y) {
+		if(isVisited()) {
+			if( x == 0 || y == 0)
+				soln++;
+			return;
+		}
+		
+		for ( int i = 0; i < nCows; i++) {
+			if(!visited[i] && (cows[i].getX() == x || cows[i].getY() == y)) {
+				visited[i] = true;
+				findNumPaths(cows[i].getX(),cows[i].getY());
+				visited[i] = false;
+			}
+		}
+	}
+	
+	public static boolean isVisited() {
+		
+		for ( int i = 0; i < nCows; i++ )
+			if(!visited[i])
+				return false;
+		
+		return true;
+	}
+}

@@ -1,0 +1,178 @@
+package com.borat.usefulapis;
+import java.io.*;
+import java.util.*;
+
+
+public class Matrix {
+	
+	int[][] matrix;
+	int rowSize,colSize;
+	private StringBuilder out;
+	
+	public Matrix( int row, int col) {
+		matrix = new int[row][col];
+		rowSize = row;
+		colSize = col;
+	}
+	
+	public Matrix(int[][] input, int row, int col) {
+		rowSize = row;
+		colSize = col;
+		matrix = new int[row][col];
+		if(input.length != rowSize)
+			throw new RuntimeException("Row size mismatch");
+		
+		for ( int i = 0; i < rowSize; i++ ) {
+			if(input[i].length != colSize)
+				throw new RuntimeException("Column size mismatch");
+			for ( int j = 0; j < colSize; j++ ) {
+				matrix[i][j] = input[i][j];
+			}
+		}
+	}
+	
+	public int getElement(int row, int col) {
+		
+		if(matrix == null)
+			throw new NullPointerException();
+		if(row >= rowSize || col >= colSize || row < 0 || col < 0)
+			throw new RuntimeException("Out of bounds");
+		
+		return matrix[row][col];
+	}
+	
+	public void setElement(int row, int col, int data) {
+		if(matrix == null)
+			throw new NullPointerException();
+		if(row >= rowSize || col >= colSize || row < 0 || col < 0)
+			throw new RuntimeException("Out of bounds");
+		
+		matrix[row][col] = data;
+	}
+	
+	
+	@Override
+	public String toString() {
+		out = new StringBuilder();
+		for ( int i = 0; i < rowSize; i++ ) { 
+			for ( int j = 0; j < colSize; j++ ) { 
+				out.append(matrix[i][j]);
+				if(j != colSize - 1)
+					out.append(" ");
+			}
+			out.append("\n");
+		}
+		
+		return out.toString();
+	}
+	
+	public void printSpiral() {
+		
+	}
+	
+	private String getSpiral(int beg, int end ) {
+		
+		for(int i = beg; i <= end; i++) 
+			out.append(matrix[beg][i]+" ");
+		
+		for (int i = beg + 1; i < end; i++) 
+			out.append(matrix[i][end]+" ");
+		
+		for (int i = end; i > beg; i-- )
+			out.append(matrix[end][i]+" ");
+		
+		for ( int i = end; i > beg; i--) 
+			out.append(matrix[i][beg]+" ");
+		
+		return out.toString();
+	}
+	
+	public void rotateClockWise(int beg, int end) {
+		int temp = matrix[beg][beg];
+		int tmp = 0;
+		
+		for(int i = beg + 1; i <= end; i++) {
+			tmp = temp;
+			temp = matrix[beg][i];
+			matrix[beg][i] = tmp;
+		}
+		
+		for (int i = beg + 1; i <= end; i++) {
+			tmp = temp;
+			temp = matrix[i][end];
+			matrix[i][end] = tmp;
+		}
+		
+		for (int i = end - 1; i >= beg; i-- ) {
+			tmp = temp;
+			temp = matrix[end][i];
+			matrix[end][i] = tmp;
+		}
+		
+		for ( int i = end - 1; i >= beg; i--) {
+			tmp = temp;
+			temp = matrix[i][beg];
+			matrix[i][beg] = tmp;
+		}
+	}
+	
+	public void rotateAntiClockWise(int beg, int end) {
+		int temp = matrix[beg][end];
+		int tmp;
+		for (int i = end - 1; i >= beg; i-- ) {
+			tmp = temp;
+			temp = matrix[beg][i];
+			matrix[beg][i] = tmp;
+		}
+		
+		for (int i = beg + 1; i <= end; i++) {
+			tmp = temp;
+			temp = matrix[i][beg];
+			matrix[i][beg] = tmp;
+		}
+		
+		for(int i = beg + 1; i <= end; i++) {
+			tmp = temp;
+			temp = matrix[end][i];
+			matrix[end][i] = tmp;
+		}
+		
+		for ( int i = end - 1; i >= beg; i--) {
+			tmp = temp;
+			temp = matrix[i][end];
+			matrix[i][end] = tmp;
+		}
+		
+	}
+	
+	public static void main(String[] args) {
+		InputReader in = new InputReader(System.in);
+		PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out)));
+		int beg,end;
+		int total = in.nextInt();
+		int[][] matrix = new int[total][total];
+		
+		for ( int i = 0; i < total; i++ ) 
+			for ( int j = 0; j < total; j++ )
+			matrix[i][j] = in.nextInt();
+		beg = 0;
+		long l = System.currentTimeMillis();
+		while(true) {
+			
+			if(beg >= total/2)
+				break;
+			end = total - 1 - beg;
+//			if(beg % 2 == 0)
+//				rotateClockWise(matrix,beg,end);
+//			else
+//				rotateAntiClockWise(matrix,beg,end);
+			beg++;
+		}
+		out.println();
+		
+		out.println((System.currentTimeMillis() - l)/1000);
+		out.close();
+		in.close();
+	}
+}
+

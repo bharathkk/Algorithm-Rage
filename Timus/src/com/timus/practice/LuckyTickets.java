@@ -1,0 +1,38 @@
+package com.timus.practice;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class LuckyTickets {
+	
+	public static void main ( String[] args ) throws NumberFormatException, IOException {
+		
+		BufferedReader in = new BufferedReader( new InputStreamReader(System.in));
+		
+		String input = in.readLine();
+		char[] inp = input.toCharArray();
+		int n,k = 0,result = 1;
+		StringTokenizer st = new StringTokenizer(input," ");
+		n = Integer.parseInt(st.nextToken());
+		
+		for ( int i = 0; i < inp.length; i++ ) {
+			if ( inp[i] == '!' )
+				k++;
+		}
+		System.out.println(k);
+		if ( n % k != 0 ) {
+			for ( int i = 0; (n - i*k) >=n%k; i++ )
+				result *= (n-i*k);
+		}
+		
+		else {
+			for ( int i = 0; (n - i*k) >=k; i++ )
+				result *= (n-i*k);
+		}
+		
+		System.out.println(result);
+			
+	}
+}

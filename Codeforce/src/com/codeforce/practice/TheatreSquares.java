@@ -1,0 +1,77 @@
+package com.codeforce.practice;
+import java.io.*;
+import java.util.*;
+
+public class TheatreSquares {
+	
+	static class InputReader {
+		BufferedReader bin;
+		StringTokenizer tokenizer;
+		
+		public InputReader(InputStream in) {
+			bin = new BufferedReader(new InputStreamReader(in));
+			tokenizer = null;
+		}
+		
+		public String next() {
+			
+			while( tokenizer == null || !tokenizer.hasMoreTokens())  {
+				try {
+					tokenizer = new StringTokenizer(bin.readLine());
+				} catch(IOException e) {
+					throw new RuntimeException(e);
+				}
+			}
+			return tokenizer.nextToken();
+		}
+		
+		public int nextInt() {
+			return Integer.parseInt(next());
+		}
+		
+		public long nextLong() {
+			return Long.parseLong(next());
+		}
+		
+		public double nextDouble() {
+			return Double.parseDouble(next());
+		}
+		
+		public float nextFloat() {
+			return Float.parseFloat(next());
+		}
+		
+		public void close() {
+			try {
+				bin.close();
+				tokenizer = null;
+			} catch ( IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
+
+
+	public static void main(String[] args) {
+		InputReader in = new InputReader(System.in);
+		PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out)));
+		long length,width,square;
+		length = in.nextLong();
+		width = in.nextLong();
+		square = in.nextLong();
+		
+		if(length % square == 0)
+			length /=square;
+		else
+			length = (length/square)+1;
+		if(width % square == 0)
+			width /= square;
+		else
+			width = (width/square) + 1;
+		out.println(length*width);
+		out.close();
+		in.close();
+	}
+}
+

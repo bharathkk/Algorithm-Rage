@@ -1,0 +1,104 @@
+package com.usaco.training;
+/*
+ID: codin.m1
+LANG: JAVA
+TASK: ariprog
+*/
+//package USACO;
+
+import java.io.*;
+import java.util.Arrays;
+import java.util.PriorityQueue;
+
+public class ariprog {
+	
+	static boolean[] bisquares = new boolean[250*250*2+1];
+	static int[] incl = new int[250*250*2+1];
+	static PriorityQueue<solns> solution = new PriorityQueue<solns>();
+	public static void main ( String[] args ) throws IOException {
+		
+		BufferedReader bin = new BufferedReader( new FileReader("ariprog.in"));
+		//BufferedReader bin = new BufferedReader( new InputStreamReader(System.in));
+		PrintWriter out = new PrintWriter ( new BufferedWriter(new FileWriter("ariprog.out")));
+		//PrintWriter out = new PrintWriter( new OutputStreamWriter(System.out));
+		
+		int n,m,a,len,ind = 0;
+		n = Integer.parseInt(bin.readLine());
+		m = Integer.parseInt(bin.readLine());
+		Arrays.fill(bisquares, false);
+		Arrays.fill(incl, 252);
+		for ( int i = 0; i <=250; i++ )
+			for ( int j = i; j <= 250; j++ ) {
+				bisquares[i*i+j*j] = true;
+				if(incl[i*i+j*j] > j)
+					incl[i*i+j*j] = j;
+			}
+		
+		for ( int i = 0; i <= m*m*2; i++ ) {
+			if (!bisquares[i])
+				continue;
+			//System.out.println("Bisquare"+i);
+			for ( int diff = 1; i + (n-1)*diff <= m*m*2; diff++) {
+				len = 1;
+				a = i + diff;
+				while ( len < n && bisquares[a] && incl[a] <= m) {
+					len++;
+					a += diff;
+				}
+				
+				if ( len == n ) {
+					solution.add(new solns(i,diff));
+				}
+			}
+		}
+		
+		solns tmp;
+		if (solution.isEmpty())
+			out.print("NONE");
+		while(!solution.isEmpty()) {
+			tmp = solution.remove();
+			out.print(tmp.getStart() +" "+tmp.getDiff());
+			if(!solution.isEmpty())
+				out.println();
+		}
+		
+		out.println();
+		bin.close();
+		out.close();
+	}
+}
+
+class solns implements Comparable<solns>{
+	
+	int start,diff;
+	
+	public solns(int a, int d) {
+		start = a;
+		diff = d;
+	}
+	
+	public int getStart() {
+		return start;
+	}
+
+	public void setStart(int start) {
+		this.start = start;
+	}
+
+	public int getDiff() {
+		return diff;
+	}
+
+	public void setDiff(int diff) {
+		this.diff = diff;
+	}
+	
+	@Override
+	public int compareTo(solns a) {
+		if ( diff == a.diff )
+			return start - a.start;
+		
+		return diff - a.diff;
+	}
+	
+}

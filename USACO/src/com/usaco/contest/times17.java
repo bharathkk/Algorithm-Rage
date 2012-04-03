@@ -1,0 +1,69 @@
+package com.usaco.contest;
+import java.io.*;
+import java.util.*;
+
+
+public class times17 {
+
+	public static void main(String[] args) throws IOException {
+		//BufferedReader bin = new BufferedReader(new FileReader("times17.in"));
+		BufferedReader bin = new BufferedReader(new InputStreamReader(System.in));
+		//PrintWriter out = new PrintWriter(new FileWriter("times17.out"));
+		
+		/*
+		char[] num = bin.readLine().toCharArray();
+		int len = num.length;
+		int[] soln = new int[len+20];
+		Arrays.fill(soln, 0);
+		int carry,ans;
+		for ( int i = 0; i < 17; i++ ) {
+			int ind = len+19;
+			carry = 0;
+			for ( int j = len-1; j >= 0; j-- ) {
+				ans = soln[ind] + (num[j]-'0') + carry;
+				if(ans > 1) {
+					carry = ans/2;
+					soln[ind] = ans%2;
+				}
+				else {
+					soln[ind] = ans;
+					carry = 0;
+				}
+				ind--;
+			}
+			while(carry > 0) {
+				ans = soln[ind] + carry;
+				if(ans > 1) {
+					carry = ans/2;
+					soln[ind] = ans%2;
+				}
+				else {
+					soln[ind] = ans;
+					carry = 0;
+				}
+				
+				ind--;
+			}
+		}
+		int start = 0;
+		for ( ;start < len+20; start++ )
+			if(soln[start] == 1)
+				break;
+		if(start == len+20)
+			System.out.println(0);
+		for (int i = start; i < len+20; i++ )
+			System.out.print(soln[i]);
+		System.out.println();
+		bin.close();
+		//out.close();
+		Arrays.fill(soln, 0);
+		*/
+		
+		int a = 16;
+		
+		for ( int i = 17; i < 31; i++ )
+			a ^= i;
+		System.out.println(a);
+		System.out.println(8^5);
+	}
+}

@@ -1,0 +1,117 @@
+import java.io.*;
+import java.util.*;
+
+public class OldMain {
+	
+	static char[] alph = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+	static class InputReader {
+		BufferedReader bin;
+		StringTokenizer tokenizer;
+		
+		public InputReader(InputStream in) {
+			bin = new BufferedReader(new InputStreamReader(in));
+			tokenizer = null;
+		}
+		
+		public String next() {
+			
+			while( tokenizer == null || !tokenizer.hasMoreTokens())  {
+				try {
+					tokenizer = new StringTokenizer(bin.readLine());
+				} catch(IOException e) {
+					throw new RuntimeException(e);
+				}
+			}
+			return tokenizer.nextToken();
+		}
+		
+		public int nextInt() {
+			return Integer.parseInt(next());
+		}
+		
+		public long nextLong() {
+			return Long.parseLong(next());
+		}
+		
+		public double nextDouble() {
+			return Double.parseDouble(next());
+		}
+		
+		public float nextFloat() {
+			return Float.parseFloat(next());
+		}
+		
+		public void close() {
+			try {
+				bin.close();
+				tokenizer = null;
+			} catch ( IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
+	public static void main(String[] args) {
+		InputReader in = new InputReader(System.in);
+		PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out)));
+		int numTests = in.nextInt();
+		String code;
+		
+		for ( int i = 0; i < numTests; i++ ) {
+			code = in.next();
+			if(Character.isDigit(code.charAt(1)) && code.charAt(0) == 'R' && code.contains("C")) {
+				out.println(convertConc(code.substring(1)));
+			}
+			else 
+				out.println(convertNum(code));
+		}
+		out.close();
+		in.close();
+	}
+	
+	public static String convertNum(String temp) {
+		int num = 0;
+		StringBuilder soln = new StringBuilder();
+		soln.append("R");
+		int len = temp.length();
+		for ( int i = 0; i < len; i++ ) {
+			if(!Character.isDigit(temp.charAt(i))) {
+				num *= 26;
+				num += (temp.charAt(i) - 'A')+1;
+			}
+			else {
+				soln.append(temp.substring(i)+"C");
+				break;
+			}
+		}
+		soln.append(num);
+		return soln.toString();
+	}
+	
+	public static String convertConc(String temp) {
+		String[] token = temp.split("C");
+		int a,b,c;
+		StringBuilder soln = new StringBuilder();
+		a = Integer.parseInt(token[0]);
+		b = Integer.parseInt(token[1]);
+		while(b > 0) {
+			if( b <= 26 ) {
+				  soln.append(alph[b-1]);
+				  break;
+			}
+			c = b%26;
+			b /= 26;
+			
+			if( c != 0 )
+				soln.append(alph[c-1]);
+			else {
+				soln.append("Z");
+				b--;
+			}
+		}
+		soln = soln.reverse();
+		soln.append(a);
+		return soln.toString();
+	}
+}
+

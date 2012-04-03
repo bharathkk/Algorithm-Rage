@@ -1,0 +1,84 @@
+package com.usaco.contest;
+import java.io.*;
+import java.util.*;
+
+public class grazing {
+
+	static int solns;
+	//static int[] iden = {10,30,30,30,15,40,120,120,120,60,40,120,120,120,60,40,120,120,120,60,8,24,24,24,12};
+	
+	static void checkPaths ( HashSet<Integer> paths, HashSet<Integer> discover, int elem ) {
+		
+		int[] elements = new int[4];
+		if ( discover.size() == 0 && elem == 25) {
+			solns++;
+			return;
+		}
+	
+		elements[0] = elem + 1;
+		elements[1] = elem - 1;
+		elements[2] = elem + 5;
+		elements[3] = elem - 5;
+		switch (elem) {
+			case 1: elements[3] = 0;
+					break;
+			case 2: elements[3] = 0;
+					break;
+			case 3: elements[3] = 0;
+					break;
+			case 4: elements[3] = 0;
+					break;
+			case 5: elements[3] = 0;
+					elements[0] = 0;
+					break;
+			case 6: elements[1] = 0;
+					break;
+			case 10:elements[0] = 0;
+					break;
+			case 15:elements[0] = 0;
+					break;
+			case 16:elements[1] = 0;
+					break;
+			case 20:elements[0] = 0;
+					break;
+			case 21:elements[1] = 0;
+					break;
+		}
+		
+			for ( int i = 0; i < 4; i++)
+				if ( discover.contains(elements[i])) {
+					if ( elements[i] == 25 && discover.size() > 1)
+						continue;
+					discover.remove(elements[i]);
+					paths.add(elements[i]);
+					checkPaths(paths,discover,elements[i]);
+					paths.remove(elements[i]);
+					discover.add(elements[i]);
+				}
+	}
+	
+	public static void main(String[] args) throws IOException {
+		//BufferedReader bin = new BufferedReader(new FileReader("grazing.in"));
+		BufferedReader bin = new BufferedReader(new InputStreamReader(System.in));
+		//PrintWriter out = new PrintWriter(new FileWriter("grazing.out"));
+		HashSet<Integer> greenSquares = new HashSet<Integer>();
+		for ( int i = 2; i < 26; i++) {
+			greenSquares.add(i);
+		}
+		HashSet<Integer> solution = new HashSet<Integer>();
+		solution.add(1);
+		int badSquares = Integer.parseInt(bin.readLine());
+		int x,y;
+		for ( int i = 0; i < badSquares; i++ ) {
+			StringTokenizer str = new StringTokenizer(bin.readLine()," ");
+			x = Integer.parseInt(str.nextToken());
+			y = Integer.parseInt(str.nextToken());
+			greenSquares.remove((x-1)*5+y);
+		}
+		
+		checkPaths(solution,greenSquares,1);
+		System.out.println(solns);
+		bin.close();
+		//out.close();
+	}
+}

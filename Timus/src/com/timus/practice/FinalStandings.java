@@ -1,0 +1,58 @@
+package com.timus.practice;
+
+import java.io.*;
+import java.util.*;
+
+
+class ranks {
+	int rank;
+	List<Integer> ids;
+	
+	public ranks(int rank) {
+		this.rank = rank;
+		ids = new ArrayList<Integer>();
+	}
+	
+	public List<Integer> getIDs() {
+		return ids;
+	}
+	
+	public void add(int n) {
+		ids.add(n);
+	}
+	
+	public int get(int n) {
+		if ( ids == null )
+			return - 1;
+		return ids.get(n);
+	}
+}
+
+public class FinalStandings {
+
+	public static void main ( String[] args ) throws IOException {
+		BufferedReader bin = new BufferedReader(new InputStreamReader(System.in));
+		PrintWriter out = new PrintWriter(System.out,true);
+		int num = Integer.parseInt(bin.readLine());
+		ranks[] solution = new ranks[101];
+		for ( int i = 0; i < 101; i++ )
+			solution[i] = new ranks(i);
+		StringTokenizer st;
+		
+		for ( int i = 0; i < num; i++ ) {
+			st = new StringTokenizer(bin.readLine());
+			int ID = Integer.parseInt(st.nextToken());
+			int M = Integer.parseInt(st.nextToken());
+			solution[M].add(ID);
+		}
+		
+		for ( int i = 100; i >= 0; i-- ) {
+			List<Integer> tmp = solution[i].getIDs();
+			int size = tmp.size();
+			for ( int j = 0; j < size; j++ )
+				out.println(tmp.get(j)+" "+i);
+		}
+		
+		bin.close();
+	}
+}

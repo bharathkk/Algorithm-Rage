@@ -1,0 +1,88 @@
+package USACO;
+import java.io.*;
+import java.util.*;
+public class gifts {
+
+	static long[][] prices;
+	
+	static int num;
+	static long budget;
+	public static void main(String[] args) throws IOException {
+		//BufferedReader bin = new BufferedReader(new FileReader("gifts.in"));
+		BufferedReader bin = new BufferedReader(new InputStreamReader(System.in));
+		//PrintWriter out = new PrintWriter(new FileWriter("gifts.out"));
+		
+		
+		StringTokenizer str = new StringTokenizer(bin.readLine()," ");
+		num = Integer.parseInt(str.nextToken());
+		budget = Long.parseLong(str.nextToken());
+		prices = new long[num][2];
+		
+		for ( int i = 0; i < num; i++ ) {
+			str = new StringTokenizer(bin.readLine()," ");
+			prices[i][0] = Long.parseLong(str.nextToken());
+			prices[i][1] = Long.parseLong(str.nextToken());
+		}
+		qsort(0,num-1);
+		int numOfCows = 0;
+		long tBudget = budget;
+		int ind = 0;
+		for ( int i = 0; i < num; i++ ) {
+			int ctr = 1;
+			tBudget = budget;
+			long price = prices[i][0]/2 + prices[i][1];
+			tBudget -= price;
+			for ( int j = 0; j < num; j++ ) {
+				if ( j == i )
+					continue;
+				long temp = prices[j][0] + prices[j][1];
+				if ( temp <= tBudget ) {
+					tBudget -= temp;
+					ctr++;
+				}
+				else
+					break;
+			}
+			if (ctr > numOfCows) 
+				numOfCows = ctr;
+		}
+		
+		System.out.println(numOfCows);
+		bin.close();
+		//out.close();
+	}
+	
+	static void swap(int i, int j) {
+		long temp1,temp2;
+		temp1 = prices[i][0];
+		temp2 = prices[i][1];
+		prices[i][0] = prices[j][0];
+		prices[i][1] = prices[j][1];
+		prices[j][0] = temp1;
+		prices[j][1] = temp2;
+	}
+	
+	static int partition(int p, int r) {
+		long x = prices[r][0] + prices[r][1];
+		int i = p - 1;
+		for ( int j = p; j < r; j++ ) {
+			long temp = prices[j][0] + prices[j][1];
+			if ( temp <= x ) {
+				i++;
+				swap(i,j);
+			}
+		}
+		swap(i+1,r);
+		return i + 1;
+		
+	}
+	
+	static void qsort(int p, int r) {
+		int q;
+		if ( p < r) {
+			q = partition(p,r);
+			qsort(p,q-1);
+			qsort(q+1,r);
+		}	
+	}
+}

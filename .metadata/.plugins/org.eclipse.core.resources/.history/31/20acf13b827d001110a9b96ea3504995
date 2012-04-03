@@ -1,0 +1,37 @@
+
+/*
+ID: codin.m1
+LANG: JAVA
+TASK: ride
+*/
+
+import java.io.*;
+
+class ride {
+
+	public static void main ( String[] args ) throws IOException {
+		
+		BufferedReader bin = new BufferedReader( new FileReader("ride.in"));
+		PrintWriter out = new PrintWriter ( new BufferedWriter(new FileWriter("ride.out")));
+		
+		
+		String comet = bin.readLine();
+		String group = bin.readLine();
+		int ncomet = 1,ngroup = 1;
+		int nlength,glength;
+		nlength = comet.length();
+		glength = group.length();
+		for ( int i = 0; i < nlength; i++ )
+			ncomet *= (comet.charAt(i) - 'A' + 1);
+		for ( int i = 0; i < glength; i++ )
+			ngroup *= (group.charAt(i) - 'A' + 1);
+		
+		if ( ngroup % 47 == ncomet %47 )
+			out.println("GO");
+		else
+			out.println("STAY");
+		out.close();
+		bin.close();
+		System.exit(0);
+	}
+}

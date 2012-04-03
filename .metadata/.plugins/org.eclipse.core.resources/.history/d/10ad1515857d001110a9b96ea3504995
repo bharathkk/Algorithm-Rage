@@ -1,0 +1,203 @@
+import java.util.*;
+import java.io.*;
+import javax.script.*;
+
+
+public class Transmission {
+
+	static class InputReader {
+		BufferedReader bin;
+		StringTokenizer tokenizer;
+		
+		public InputReader(InputStream in) {
+			bin = new BufferedReader(new InputStreamReader(in));
+			tokenizer = null;
+		}
+		
+		public String next() {
+			String temp;
+			while( tokenizer == null || !tokenizer.hasMoreTokens())  {
+				try {
+					temp = bin.readLine();
+					if(temp == null)
+						return null;
+					tokenizer = new StringTokenizer(temp);
+				} catch(IOException e) {
+					throw new RuntimeException(e);
+				}
+			}
+			return tokenizer.nextToken();
+		}
+		
+		public int nextInt() {
+			return Integer.parseInt(next());
+		}
+		
+		public long nextLong() {
+			return Long.parseLong(next());
+		}
+		
+		public double nextDouble() {
+			return Double.parseDouble(next());
+		}
+		
+		public float nextFloat() {
+			return Float.parseFloat(next());
+		}
+		
+		public void close() {
+			try {
+				bin.close();
+				tokenizer = null;
+			} catch ( IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+	
+	static List<String> operations = new ArrayList<String>();
+	static final char[] op = {'*','+','/','-'};
+	static int total,count=0;
+	static int[] num;
+	static HashMap<Integer,Boolean> map = new HashMap<Integer,Boolean>();
+	static final String operators = "-+/*";
+	static final String operands = "0123456789";
+	
+	public static void main(String[] args) throws ScriptException {
+		InputReader in = new InputReader(System.in);
+		PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out)));
+		
+		total = in.nextInt();
+		num = new int[total];
+		for ( int i = 0; i < total; i++ ) 
+			num[i] = in.nextInt();
+		long l = System.currentTimeMillis();
+		generatePerm(0,total-1,0,new StringBuilder());
+		out.println((System.currentTimeMillis() - l)/1000);
+		int ans = 1;
+		while(true) {
+			if(!map.containsKey(ans)) {
+				out.println(ans);
+				break;
+			}
+			ans++;
+		}
+		
+		out.close();
+		in.close();
+	}
+	
+	public static void generatePerm(int start, int len, int numBraces, StringBuilder str) throws ScriptException {
+		if(len == 0 ) {
+			str.append(num[start]);
+			map.put(evaluate(convert(str.toString(),true)),true);
+			map.put(evaluate(convert(str.toString(),false)),true);
+			str.delete(str.length()-1-numBraces,str.length());
+			return;
+		}
+			
+			str.append(num[start]);
+			for ( int i = 0; i < 4; i++ ) {
+				str.append(op[i]);
+				generatePerm(start+1,len-1,numBraces,str);
+				str.deleteCharAt(str.length()-1);
+			}
+			str.deleteCharAt(str.length() - 1);
+	}
+	
+	public static String convert(String infixExpr,boolean flag) {
+        char[] chars = infixExpr.toCharArray();
+        Stack<Character> stack = new Stack<Character>();
+        StringBuilder out = new StringBuilder(infixExpr.length());
+
+        for (char c : chars) {
+                if (isOperator(c)) {
+                        while (!stack.isEmpty() && stack.peek() != '(') {
+                                if (operatorGreaterOrEqual(stack.peek(), c,flag)) {
+                                        out.append(stack.pop());
+                                } else {
+                                        break;
+                                }
+                        }
+                        stack.push(c);
+                } else if (c == '(') {
+                        stack.push(c);
+                } else if (c == ')') {
+                        while (!stack.isEmpty() && stack.peek() != '(') {
+                                out.append(stack.pop());
+                        }
+                        if (!stack.isEmpty()) {
+                                stack.pop();
+                        }
+                } else if (isOperand(c)) {
+                        out.append(c);
+                }
+        }
+        
+        while (!stack.empty()) {
+                out.append(stack.pop());
+        }
+        
+        return out.toString();
+	}
+
+	public static int evaluate(String postfixExpr) {
+	        char[] chars = postfixExpr.toCharArray();
+	        Stack<Integer> stack = new Stack<Integer>();
+	        for (char c : chars) {
+	                if (isOperand(c)) {
+	                        stack.push(c - '0'); // convert char to int val
+	                } else if (isOperator(c)) {
+	                        int op1 = stack.pop();
+	                        int op2 = stack.pop();
+	                        int result;
+	                        switch (c) {
+	                        case '*':
+	                                result = op1 * op2;
+	                                stack.push(result);
+	                                break;
+	                        case '/':
+	                                result = op2 / op1;
+	                                stack.push(result);
+	                                break;
+	                        case '+':
+	                                result = op1 + op2;
+	                                stack.push(result);
+	                                break;
+	                        case '-':
+	                                result = op2 - op1;
+	                                stack.push(result);
+	                                break;
+	                        }
+	                }
+	        }
+	        return stack.pop();
+	}
+	
+	private static int getPrecedence(char operator, boolean flag) {
+	        int ret = 0;
+	        if (operator == '-' || operator == '+') {
+	                ret = 1;
+	                if(flag)
+	                	ret = 2;
+	        } else if (operator == '*' || operator == '/') {
+	                ret = 2;
+	                if(flag)
+	                	ret = 1;
+	        }
+	        
+	        return ret;
+	}
+	
+	private static boolean operatorGreaterOrEqual(char op1, char op2, boolean flag) {
+	        return getPrecedence(op1,flag) >= getPrecedence(op2,flag);
+	}
+	
+	private static boolean isOperator(char val) {
+	        return operators.indexOf(val) >= 0;
+	}
+	
+	private static boolean isOperand(char val) {
+	        return operands.indexOf(val) >= 0;
+	}
+}

@@ -1,0 +1,84 @@
+package problems;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
+public class SaveHumanity {
+
+	static String lastword, DNA, virusDNA;
+	static int[] table;
+	static List<Integer> substrInd;
+	
+	public static void main ( String[] args ) throws IOException {
+		
+		BufferedReader bin = new BufferedReader(new InputStreamReader(System.in));
+		int numTc = Integer.parseInt(bin.readLine());
+		int m = 0,i = 0,ctr = 0,ind=0,len;
+		boolean sflag;
+		
+		for ( int ll = 0; ll < numTc; ll++ ) {
+			DNA = bin.readLine();
+			virusDNA = bin.readLine();
+			len = virusDNA.length();
+			buildTable();
+			
+			while ( m + i < DNA.length() ) {
+				
+				if ( virusDNA.charAt(i) == DNA.charAt(m+i) ) {
+					i++;
+					if(i == len) {
+						substrInd.add(m);
+						m++;
+						i = 0;
+					}
+				}
+				else {
+					ctr++;
+					if(ctr == 1) {
+						i++;
+						continue;
+					}
+					ctr = 0;
+					m = m + i - table[i];
+					if ( table[i] > 0 )
+						i = table[i];
+					else {
+						i = 0;
+					}
+				}
+			}
+	}
+
+	}
+	
+	static void buildTable () { 
+		
+		table = new int[virusDNA.length()];
+		table[0] = -1;
+		if ( virusDNA.length() == 1 )
+			return;
+		table[1] = 0;
+		int pos = 2, cnd = 0;
+		
+		while ( pos < virusDNA.length()) {
+			
+			if ( virusDNA.charAt(pos - 1) == virusDNA.charAt(cnd) ) {
+				cnd += 1;
+				table[pos] = cnd;
+				pos += 1;
+			}
+			else {
+				if ( cnd > 0 ) {
+					cnd = table[cnd];
+				}
+				else {
+					table[pos] = 0;
+					pos += 1;
+				}
+			}
+		}
+	}
+}

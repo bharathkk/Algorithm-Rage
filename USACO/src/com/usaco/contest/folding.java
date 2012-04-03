@@ -1,0 +1,56 @@
+package com.usaco.contest;
+import java.io.*;
+import java.util.*;
+
+
+public class folding {
+
+	public static void main(String[] args) throws IOException {
+		//BufferedReader bin = new BufferedReader(new FileReader("folding.in"));
+		BufferedReader bin = new BufferedReader(new InputStreamReader(System.in));
+		//PrintWriter out = new PrintWriter(new FileWriter("folding.out"));
+		int len, num,counter = 0;
+		int[] knots;
+		boolean[] set;
+		StringTokenizer st = new StringTokenizer(bin.readLine()," ");
+		num = Integer.parseInt(st.nextToken());
+		len = Integer.parseInt(st.nextToken());
+		if (len == 1) {
+			System.out.println(0);
+			bin.close();
+			System.out.close();
+		}
+		else {
+			knots = new int[num];
+			set = new boolean[len+1];
+			Arrays.fill(set, false);
+			
+			for ( int i = 0; i < num; i++ ) {
+				knots[i] = Integer.parseInt(bin.readLine());
+				set[knots[i]] = true;
+			}
+			
+			Arrays.sort(knots);
+			
+			for ( int i = 1; i < len; i++ ) {
+				boolean flag = true,fl = false;
+				for ( int j = 0; knots[j] < i; j++ ) {
+					int tmp = 2*i - knots[j];
+					if ( tmp <= len ) {
+						fl = true;
+						if (!set[tmp]) {
+							flag = false;
+						}
+						if(flag == false)
+							break;
+					}
+				}
+				if (flag && fl) 
+					counter++;
+			}
+			System.out.println(counter);
+			bin.close();
+			//out.close();
+		}
+	}
+}

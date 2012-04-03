@@ -1,0 +1,118 @@
+package com.usaco.training;
+/*
+ID: codin.m1
+LANG: JAVA
+TASK: checker
+*/
+//package USACO;
+
+import java.io.*;
+import java.util.*;
+
+public class checker {
+	
+	static boolean[] rows, cols;
+	static int size,numSolns,eSoln;
+	static long soln;
+	static List<Integer> solns = new ArrayList<Integer>();
+	static PrintWriter out;
+	static boolean[][] lmatrix,rmatrix;
+	static boolean print = true;
+	public static void main ( String[] args ) throws IOException {
+		
+		BufferedReader bin = new BufferedReader( new FileReader("checker.in"));
+		//BufferedReader bin = new BufferedReader( new InputStreamReader(System.in));
+		out = new PrintWriter ( new BufferedWriter(new FileWriter("checker.out")));
+		//out = new PrintWriter( new OutputStreamWriter(System.out));
+		size = Integer.parseInt(bin.readLine());
+		rows = new boolean[size];
+		cols = new boolean[size];
+		lmatrix = new boolean[size][size];
+		rmatrix = new boolean[size][size];
+		
+		probeChecker(0);
+		
+		if ( size %2 == 0 && eSoln!=0 )
+			out.println(eSoln);
+		else
+			out.println(eSoln+numSolns);
+		
+		bin.close();
+		out.close();
+	}
+	
+	public static void probeChecker(int col) {
+		int rdRow,rdCol,ldRow,ldCol,temp;
+		if ( col == size ) {
+			if (numSolns < 3 && print ) {
+				for ( int i = 0; i < size; i++ ) {
+					out.print(solns.get(i));
+					if ( i != size - 1)
+						out.print(" ");
+				}
+				out.println();
+			}
+			if ( numSolns >=3 && print )
+				print = false;
+			numSolns++;
+			return;
+		}
+		
+		for ( int i = 0; i < size; i++ ) {
+			if (size %2 == 0 && col == 0 && i == size/2 && !print) {
+				eSoln = 2*numSolns;
+				return;
+			}
+			if (size %2 != 0 && col == 0 && !print) {
+				if ( i == size/2 ) {
+					eSoln = 2*numSolns;
+					numSolns = 0;
+				}
+				if ( i == (size/2) + 1)
+					return;
+			}
+			if (rows[i])
+				continue;
+			
+			temp = col + i;
+			if ( col < i ) {
+				rdRow = i - col;
+				rdCol = 0;
+			}
+			else {
+				rdRow = 0;
+				rdCol = col - i;
+			}
+			if ( temp >= size - 1 ) {
+				ldRow = size - 1;
+				if(temp != 2*(size-1))
+					ldCol = temp%(size-1);
+				else
+					ldCol = col;
+			}
+			else {
+				ldRow = temp; 
+				ldCol = 0;
+			}
+			
+			if (lmatrix[rdRow][rdCol] || rmatrix[ldRow][ldCol])
+				continue;
+			
+			rows[i] = true;
+			solns.add(i+1);
+			lmatrix[rdRow][rdCol] = true;
+			rmatrix[ldRow][ldCol] = true;
+			//lDiag.put(rdRow*10+rdCol, true);
+			//rDiag.put(ldRow*10+ldCol, true);
+			probeChecker(col+1);
+			rmatrix[ldRow][ldCol] = false;
+			lmatrix[rdRow][rdCol] = false;
+			//lDiag.put(rdRow*10+rdCol, false);
+			//rDiag.put(ldRow*10+ldCol, false);
+			solns.remove(col);
+			rows[i] = false;
+		}
+	}
+	
+}
+

@@ -1,0 +1,42 @@
+package problems;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class GeneratePrime {
+
+	public static void main ( String[] args ) throws NumberFormatException, IOException {
+		
+		BufferedReader in = new BufferedReader( new InputStreamReader(System.in));
+		int[] inp,primes;
+		int k,max = Integer.MIN_VALUE,index = 1,start = 3;
+		boolean flag = true;
+		
+		k = Integer.parseInt(in.readLine());
+		
+		inp = new int[k];
+		for ( int i = 0; i < k; i++ ) {
+			inp[i] = Integer.parseInt(in.readLine());
+			max = max > inp[i]?max : inp[i];
+		}
+		primes = new int[max];
+		primes[0] = 2;
+		
+		while ( index < max ) {
+			
+			flag = true;
+			for ( int j = 0; j < index && primes[j] <= Math.sqrt(start); j++ )
+				if ( start % primes[j] == 0 ) {
+					flag = false;
+					break;
+				}
+			if ( flag == true )
+				primes[index++] = start;
+			start +=2;
+		}
+		
+		for ( int i = 0; i < k; i++ ) 
+			System.out.println(primes[inp[i]-1]);
+	}
+}

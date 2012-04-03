@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/BlackWhiteMagic/BlackWhiteMagic.iml" filepath="$PROJECT_DIR$/BlackWhiteMagic/BlackWhiteMagic.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BlackjackWinner/BlackjackWinner.iml" filepath="$PROJECT_DIR$/BlackjackWinner/BlackjackWinner.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BridgePts/BridgePts.iml" filepath="$PROJECT_DIR$/BridgePts/BridgePts.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ChatTranscript/ChatTranscript.iml" filepath="$PROJECT_DIR$/ChatTranscript/ChatTranscript.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DiskSpace/DiskSpace.iml" filepath="$PROJECT_DIR$/DiskSpace/DiskSpace.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DivisorDigits/DivisorDigits.iml" filepath="$PROJECT_DIR$/DivisorDigits/DivisorDigits.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EllysFractions/EllysFractions.iml" filepath="$PROJECT_DIR$/EllysFractions/EllysFractions.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EllysJuice/EllysJuice.iml" filepath="$PROJECT_DIR$/EllysJuice/EllysJuice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EllysLights/EllysLights.iml" filepath="$PROJECT_DIR$/EllysLights/EllysLights.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Embassy/Embassy.iml" filepath="$PROJECT_DIR$/Embassy/Embassy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EvenRoute/EvenRoute.iml" filepath="$PROJECT_DIR$/EvenRoute/EvenRoute.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FindingSquareInTable/FindingSquareInTable.iml" filepath="$PROJECT_DIR$/FindingSquareInTable/FindingSquareInTable.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FormatAmt/FormatAmt.iml" filepath="$PROJECT_DIR$/FormatAmt/FormatAmt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FoxAndGCDLCM/FoxAndGCDLCM.iml" filepath="$PROJECT_DIR$/FoxAndGCDLCM/FoxAndGCDLCM.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FoxAndIntegers/FoxAndIntegers.iml" filepath="$PROJECT_DIR$/FoxAndIntegers/FoxAndIntegers.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FoxAndSorting/FoxAndSorting.iml" filepath="$PROJECT_DIR$/FoxAndSorting/FoxAndSorting.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FoxListeningToMusic/FoxListeningToMusic.iml" filepath="$PROJECT_DIR$/FoxListeningToMusic/FoxListeningToMusic.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HexatridecimalSum/HexatridecimalSum.iml" filepath="$PROJECT_DIR$/HexatridecimalSum/HexatridecimalSum.iml" />
+      <module fileurl="file://$PROJECT_DIR$/KingXNewBaby/KingXNewBaby.iml" filepath="$PROJECT_DIR$/KingXNewBaby/KingXNewBaby.iml" />
+      <module fileurl="file://$PROJECT_DIR$/KingXNewCurrency/KingXNewCurrency.iml" filepath="$PROJECT_DIR$/KingXNewCurrency/KingXNewCurrency.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LeastMajorityMultiple/LeastMajorityMultiple.iml" filepath="$PROJECT_DIR$/LeastMajorityMultiple/LeastMajorityMultiple.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LeftOrRight/LeftOrRight.iml" filepath="$PROJECT_DIR$/LeftOrRight/LeftOrRight.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MinimumLiars/MinimumLiars.iml" filepath="$PROJECT_DIR$/MinimumLiars/MinimumLiars.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MostProfitable/MostProfitable.iml" filepath="$PROJECT_DIR$/MostProfitable/MostProfitable.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PrinceXToastbook/PrinceXToastbook.iml" filepath="$PROJECT_DIR$/PrinceXToastbook/PrinceXToastbook.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ProfitCalculator/ProfitCalculator.iml" filepath="$PROJECT_DIR$/ProfitCalculator/ProfitCalculator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RestaurantManager/RestaurantManager.iml" filepath="$PROJECT_DIR$/RestaurantManager/RestaurantManager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SkewedPerspectives/SkewedPerspectives.iml" filepath="$PROJECT_DIR$/SkewedPerspectives/SkewedPerspectives.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SquareSeries/SquareSeries.iml" filepath="$PROJECT_DIR$/SquareSeries/SquareSeries.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SubstitutionCode/SubstitutionCode.iml" filepath="$PROJECT_DIR$/SubstitutionCode/SubstitutionCode.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TCSRMs.iml" filepath="$PROJECT_DIR$/TCSRMs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TimeCard/TimeCard.iml" filepath="$PROJECT_DIR$/TimeCard/TimeCard.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WidgetRepairs/WidgetRepairs.iml" filepath="$PROJECT_DIR$/WidgetRepairs/WidgetRepairs.iml" />
+    </modules>
+  </component>
+</project>
+

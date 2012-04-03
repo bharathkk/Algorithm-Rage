@@ -1,0 +1,83 @@
+//package USACO;
+
+/*
+ID: codin.m1
+LANG: JAVA
+TASK: crypt1
+*/
+
+import java.io.*;
+import java.util.*;
+
+class crypt1 {
+
+	public static void main ( String[] args ) throws IOException {
+		
+		BufferedReader bin = new BufferedReader( new FileReader("crypt1.in"));
+		//BufferedReader bin = new BufferedReader( new InputStreamReader(System.in));
+		PrintWriter out = new PrintWriter ( new BufferedWriter(new FileWriter("crypt1.out")));
+		
+		int num = Integer.parseInt(bin.readLine());
+		int temp;
+		StringTokenizer str = new StringTokenizer(bin.readLine());
+		boolean[] flags = new boolean[10];
+		
+		for ( int i = 0; i < num; i++ ) {
+			temp = Integer.parseInt(str.nextToken());
+			flags[temp] = true;
+		}	
+		int c1,c2,j1,j2;
+		int ctr = 0;
+		for ( int i = 100; i < 999; i++ ) {
+			int c = i;
+			c1 = c % 10;
+			c /= 10;
+			c2 = c % 10;
+			c /= 10;
+			
+			for ( int j = 10; j < 99; j++ ) {
+				boolean flag = true;
+				if ( i*j > 9999)
+					break;
+				else {
+					j2 = j;
+					j1 = j2 % 10;
+					j2 /= 10;
+					
+					if (flags[c1] && flags[c2] && flags[c] && flags[j2] && flags[j1]) {
+						int tmp = i*j,tmp1 = i * j1,tmp2 = i * j2;
+						if ( tmp1 > 999 || tmp2 > 999 )
+							continue;
+						while (tmp != 0) {
+							int l = tmp % 10;
+							tmp /= 10;
+							if(!flags[l])
+								flag = false;
+						}
+						while (tmp2 != 0){
+							int l2 = tmp2 % 10;
+							tmp2 /= 10;
+							if (!flags[l2])
+								flag = false;
+						}
+						while (tmp1 != 0){
+							int l1 = tmp1 % 10;
+							tmp1 /= 10;
+							if ( !flags[l1])
+								flag = false;
+						}
+						if(flag) {
+							ctr++;
+						}
+						
+					}
+				}
+				
+			}
+		}
+		out.println(ctr);
+		out.close();
+		bin.close();
+		System.exit(0);
+	}
+}

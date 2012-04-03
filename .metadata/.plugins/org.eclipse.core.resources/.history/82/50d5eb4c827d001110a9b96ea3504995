@@ -1,0 +1,95 @@
+/*
+ID: codin.m1
+LANG: JAVA
+TASK: milk3
+*/
+//package USACO;
+import java.io.*;
+import java.util.*;
+
+class milk3 {
+	
+	static int capA,capB,capC,lastInd;
+	static boolean[] soln = new boolean[21];
+	static boolean[][] config = new boolean[21][21];
+	
+	public static void main ( String[] args ) throws IOException {
+		
+		BufferedReader bin = new BufferedReader( new FileReader("milk3.in"));
+		//BufferedReader bin = new BufferedReader( new InputStreamReader(System.in));
+		PrintWriter out = new PrintWriter ( new BufferedWriter(new FileWriter("milk3.out")));
+		//PrintWriter out = new PrintWriter (new OutputStreamWriter(System.out));
+		String[] inp = bin.readLine().split(" ");
+		capA = Integer.parseInt(inp[0]);
+		capB = Integer.parseInt(inp[1]);
+		capC = Integer.parseInt(inp[2]);
+		
+		Arrays.fill(soln, false);
+		lastInd = 0;
+		for ( int i = 0; i <= 20; i++ )
+			Arrays.fill(config[i], false);
+		
+		recurseSoln(0,0,capC);
+		
+		for ( int i = 0; i <= 20; i++ ) 
+			if (soln[i]) {
+				out.print(i);
+				
+				if ( i != lastInd)
+					out.print(" ");
+			}
+		out.println();
+		out.close();
+		bin.close();
+	}
+	
+	static public void recurseSoln ( int a, int b, int c) {
+	
+		if ( a < 0 || b < 0 || c < 0 || a > capA || b > capB || c > capC )
+			return;
+		if (config[a][b])
+			return;
+		else
+			config[a][b] = true;
+		
+		if ( a == 0 ) {
+			if(soln[c]) 
+				return;
+			soln[c] = true;
+			if ( c > lastInd)
+				lastInd = c;
+		}
+		
+		if (a > 0 ) {
+			recurseSoln(0, b+a, c);
+			recurseSoln(0,b,c+a);
+			if ( a - (capB - b) >= 0 && b != capB )
+				recurseSoln(a-(capB-b),capB,c);
+			if ( a - (capC - c) >= 0 && c != capC )
+				recurseSoln(a-(capC-c),b,capC);
+		}
+		
+		
+		if( b > 0 ) {
+			recurseSoln(a+b,0,c);
+			recurseSoln(a,0,c+b);
+			if ( b - (capA - a) >= 0 && a != capA )
+				recurseSoln(capA,b-(capA-a),c);
+			if ( b - (capC - c) >= 0 && c != capC )
+			recurseSoln(a,b-(capC-c),capC);
+		}
+		
+		
+		
+		if ( c > 0 ) {
+			recurseSoln(a+c,b,0);
+			recurseSoln(a,b+c,0);
+			if ( c - (capA - a) >= 0 && a != capA )
+				recurseSoln(capA,b,c-(capA-a));
+			if ( c - (capB - b) >= 0 && b != capB )
+				recurseSoln(a,capB,c-(capB-b));
+		}
+		
+	}
+
+}

@@ -1,0 +1,50 @@
+package com.borat.practice;
+import java.io.*;
+import java.text.DecimalFormat;
+import java.util.*;
+import java.util.regex.*;
+
+class BigInt {
+	
+	int[] num;
+	final int length = 10;
+	final long LIMIT = 1000000000;
+	
+	public BigInt(int n) {
+		num = new int[length];
+		num[0] = n;
+		for ( int i = 1; i < length; i++ )
+			num[i] = 0;
+	}
+	
+	public void multiply(int n) {
+		int rem = 0;
+		for ( int i = 0; i < length; i++ ) {
+			long number = num[i]*n + rem;
+			num[i] = (int)(number%LIMIT);
+			rem = (int)(number / LIMIT);
+		}
+	}
+	
+}
+
+public class Main {
+
+	   public static void main(String[] args) throws IOException {
+	   	
+	   	BufferedReader bin = new BufferedReader(new InputStreamReader(System.in));
+	   	int n,ans;
+	   	StringBuilder soln = new StringBuilder();
+	   	while(true) {
+	   	  
+	   	  n = Integer.parseInt(bin.readLine());
+	   	  if(n == 0)
+	   	    break;
+	   	  ans = (n*(n+1)*(2*n+1))/6;
+	   	  soln.append(ans+"\n");  
+	   	}
+	   	
+	   	System.out.print(soln.toString());
+	   
+	   }
+	}

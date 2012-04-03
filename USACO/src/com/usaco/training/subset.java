@@ -1,0 +1,47 @@
+/*
+ID: codin.m1
+LANG: JAVA
+TASK: subset
+*/
+package com.usaco.training;
+import java.io.*;
+
+
+class subset {
+	static long[][] count;
+	public static void main ( String[] args ) throws IOException {
+		
+		//BufferedReader bin = new BufferedReader( new FileReader("subset.in"));
+		BufferedReader bin = new BufferedReader( new InputStreamReader(System.in));
+		//PrintWriter out = new PrintWriter ( new BufferedWriter(new FileWriter("subset.out")));
+		PrintWriter out = new PrintWriter ( new BufferedWriter(new OutputStreamWriter(System.out)));
+		
+		int num,maxSum;
+		num = Integer.parseInt(bin.readLine());
+		maxSum = (num*(num+1))/2;
+		
+		if(maxSum % 2 != 0 ) 
+			out.println(0);
+		else {
+			maxSum /= 2;
+			count = new long[maxSum+1][num+1];
+			for(int i = 0; i <= maxSum; i++ )
+				for ( int j = 0; j <= num; j++ )
+					count[i][j] = -1;
+			count[0][0] = 1;
+			out.println(find(maxSum,num)/2);
+		}
+		out.close();
+		bin.close();
+		
+	}
+	
+	public static long find(int sum, int n) {
+		if( sum < 0 || n < 0 )
+			return 0;
+		if( count[sum][n] != -1)
+			return count[sum][n];
+		count[sum][n] = find(sum,n-1) + find(sum-n,n-1);
+		return count[sum][n];
+	}
+}

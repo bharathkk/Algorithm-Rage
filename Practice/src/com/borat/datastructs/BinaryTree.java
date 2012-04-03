@@ -1,0 +1,378 @@
+package com.borat.datastructs;
+
+import java.util.*;
+import java.util.Stack;
+
+@SuppressWarnings("unchecked")
+public class BinaryTree<Item extends Comparable<Item>> {
+
+	public Node root;
+	HashMap<Item,Integer> mapIndex;
+	
+	public class Node {
+		
+		Item data;
+		Node left,right;
+		boolean visited;
+		
+		Node( Item data) {
+			
+			this.data = data;
+			left = right = null;
+			visited = false;
+		}
+	}
+	
+	public BinaryTree() { 
+		root = null;
+		mapIndex = new HashMap<Item,Integer>();
+	}
+	
+	public void insert(Item data) {
+		root = insert(root,data);
+	}
+	
+	public boolean lookup(Item data) {
+		return lookup(root,data);
+	}
+	
+	public boolean hasPathSum( int sum) {
+		return hasPathSum(root,sum);
+	}
+	
+	public Item minValue() {
+		return minValue(root);
+	}
+	
+	public int maxDepth() {
+		return maxDepth(root);
+	}
+	
+	public void printMirror() {
+		printMirror(root);
+	}
+	
+	public void printPaths() {
+		Item[] paths = (Item[])new Object[20];
+		int pathLength = 0;
+		printPaths(root,paths,pathLength);
+	}
+	
+	public void constructBinaryTree ( List<Item> preOrder, Item[] inOrder ) {
+		root = constructTree(preOrder,inOrder);
+	}
+	
+	private Node insert(Node node, Item data) {
+		
+		if ( node == null){
+			node = new Node(data);
+			return node;
+		}
+		
+		if ( data.compareTo(node.data) <= 0 )
+			node.left = insert(node.left,data);
+		else
+			node.right = insert(node.right,data);
+		
+		return node;
+	}	
+	
+	private boolean lookup(Node node, Item data) {
+		
+		if ( node == null ) 
+			return false;
+		
+		if ( node.data == data) 
+			return true;
+		
+		return node.data.compareTo(data) < 0?lookup(node.left,data):lookup(node.right,data);
+	}
+	
+	private boolean hasPathSum( Node node, int sum ) {
+		
+		if ( node == null )
+			return sum == 0;
+		
+		return hasPathSum(node.left,sum - Integer.parseInt(node.data.toString())) || hasPathSum(node.right,sum - Integer.parseInt(node.data.toString())) || hasPathSum(node.left,sum) || hasPathSum(node.right,sum);
+		 
+	}
+	
+	private Item minValue ( Node node) {
+		
+		if ( node == null )
+			return null;
+		
+		Node currNode = node;
+		
+		while ( currNode.left != null ) {
+			currNode = currNode.left;
+		}
+		
+		return currNode.data;
+	}
+	
+	private int maxDepth ( Node node) {
+		
+		if ( node == null )
+			return 0;
+		
+		int lDepth,rDepth;
+		
+		lDepth = maxDepth(node.left);
+		rDepth = maxDepth(node.right);
+		
+		return Math.max(lDepth, rDepth) + 1;
+	}
+	
+	private void printPaths( Node node, Item[] paths, int pathLength ) {
+		
+		if ( node == null )
+			return ;
+		
+		paths[pathLength] = node.data;
+		pathLength +=1;
+		
+		if ( node.left == null && node.right == null ) {
+			if ( pathLength != 0 ) {
+				
+				for ( int i = 0; i < pathLength; i++ ) {
+					System.out.print(paths[i]);
+					if ( i != pathLength - 1)
+						System.out.print("-->");
+				}
+				System.out.println();
+					
+			}
+		}
+		
+		else {
+				
+			printPaths(node.left,paths,pathLength);
+			printPaths(node.right,paths,pathLength);
+		}
+	}
+	
+	private void printMirror( Node node) {
+		
+		if ( node == null )
+			return;
+		
+		printMirror(node.left);
+		printMirror(node.right);
+		
+		Node newNode = node.left;
+		node.left = node.right;
+		node.right = newNode;
+	}
+	
+	private Node constructTree ( List<Item> preOrder, Item[] inOrder) {
+		
+		for ( int ind = 0; ind < inOrder.length; ind++ ) {
+			mapIndex.put(inOrder[ind], ind);
+			//System.out.println("Index of"+inOrder[ind]+" :"+ind);
+		}
+			
+		
+		return constructBinaryTree(preOrder,0,inOrder.length);	
+	}
+	
+	private Node constructBinaryTree ( List<Item> preOrder, int startIndex, int endIndex ) {
+		
+		
+		Node newNode = null;
+		if ( startIndex >= endIndex || preOrder.size() == 0 ) 
+			return null;
+		
+		else {
+			
+			Item rootValue = preOrder.get(0);
+			newNode = new Node(rootValue);
+			preOrder.remove(0);
+			int indValue = mapIndex.get(rootValue);
+			newNode.left = constructBinaryTree(preOrder,startIndex,indValue);
+			newNode.right = constructBinaryTree(preOrder,indValue+1,endIndex);			
+		}
+		
+		return newNode;
+	}
+	
+	public void printInorder() {
+		printInorder(root);
+	}
+	
+	public void printPostorder() {
+		printPostorder(root);
+	}
+	
+	public void printPreorder() {
+		printPreorder(root);
+	}
+	
+	private void printInorder(Node node) {
+		
+		if ( node == null )
+			return;
+		else {
+			
+			printInorder(node.left);
+			System.out.print(node.data+" ");
+			printInorder(node.right);
+			
+		}
+	}
+	
+	private void printPostorder(Node node) {
+		
+		if ( node == null )
+			return;
+		else {
+			
+			printPostorder(node.left);
+			printPostorder(node.right);
+			System.out.print(node.data+" ");
+		}
+	}
+	
+	public void printPostorderItr() {
+		Node node = root;
+		Stack<Node> st = new Stack<Node>();
+		st.push(node);
+		while(!st.isEmpty()) {
+			Node tNode = st.peek();
+			if(tNode.left != null) {
+				if(!tNode.left.visited) {
+					st.push(tNode.left);
+					continue;
+				}
+			}
+			if (tNode.right != null) {
+				if(!tNode.right.visited) {
+					st.push(tNode.right);
+					continue;
+				}
+			} 
+			if(tNode.visited == false) {
+				System.out.print(tNode.data+" ");
+				tNode.visited = true;
+				st.pop();
+			}
+		}
+	}
+	private void printPreorder(Node node) {
+		
+		if ( node == null )
+			return;
+		else {
+			
+			System.out.print(node.data+" ");
+			printPreorder(node.left);
+			printPreorder(node.right);			
+		}
+	}
+	
+	private void join (Node a, Node b) {
+		
+		a.right = b;
+		b.left = a;
+	}
+	
+	private Node append (Node a, Node b) {
+	
+		if ( a == null && b == null )
+			return null;
+		if ( a == null ) return b;
+		if ( b == null ) return a;
+		
+		Node aList,bList;
+		
+		aList = a.left;
+		bList = b.left;
+		
+		join(aList,b);
+		join(bList,a);
+		
+		return a;
+	}
+	
+	public Node treeToList ( Node root ) {
+		
+		if ( root == null )
+			return null;
+		
+		Node aList,bList;
+		
+		aList = treeToList(root.left);
+		bList = treeToList(root.right);
+		
+		root.left = root;
+		root.right = root;
+		
+		aList = append(aList,root);
+		
+		aList = append (bList,aList);
+		
+		return aList;
+	}
+	
+	public void printList ( Node head) {
+		
+		Node current = head;
+		while ( current != null ) {
+			System.out.println(current.data);
+			current = current.right;
+			if ( current == head)
+				break;
+		}
+		current = null;	
+	}
+	
+	public static void main ( String args[]) {
+		
+		BinaryTree<Integer> binaryTree = new BinaryTree<Integer>();
+		
+//		binaryTree.insert(4);
+//		binaryTree.insert(2);
+//		binaryTree.insert(6);
+//		binaryTree.insert(1);
+//		binaryTree.insert(3);
+//		binaryTree.insert(5);
+//		binaryTree.insert(12);
+//		binaryTree.insert(11);
+//		binaryTree.insert(0);
+		
+//		System.out.println(binaryTree.hasPathSum(9));
+		
+//		binaryTree.printInorder();
+//		System.out.println("\n-----------");
+//		binaryTree.printPreorder();
+//		binaryTree.printPostorder();
+//		System.out.println();
+//		binaryTree.printPostorderItr();
+//		
+//		binaryTree.printMirror();
+//		System.out.println();
+//		binaryTree.printPaths();
+//		
+//		
+		Integer[] inOrder = {1,2,3,4,5};
+		List<Integer> preOrder = new ArrayList<Integer>();
+		preOrder.add(4);
+		preOrder.add(2);
+		preOrder.add(1);
+		preOrder.add(3);
+		preOrder.add(5);
+//		
+//		Node head = binaryTree.treeToList(binaryTree.root);
+//		
+//		binaryTree.printList(head);
+		
+		binaryTree.constructBinaryTree(preOrder, inOrder);
+		System.out.println("Printing inorder for newly created tree....");
+		binaryTree.printInorder();
+		System.out.println("\nPrinting postorder for newly created tree....");
+		binaryTree.printPostorder();
+		System.out.println("\nPrinting preorder for newly created tree....");
+		binaryTree.printPreorder();
+		
+	}
+}
